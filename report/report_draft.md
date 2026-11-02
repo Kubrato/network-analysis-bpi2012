@@ -68,7 +68,7 @@ Resource `112` records 4,065 events, more than any employee. All of them are aut
 
 We adopt a whole-network design: within the boundary above, all employees and all ties among them are included.
 
-**Tools.** We used Python: PM4Py to read the log and build the handover networks, pandas to filter and store the data, NetworkX and SciPy to compute measures and run the tests, and Gephi for the figures. Data is stored as CSV edge lists and node tables, and as GEXF files for Gephi. The code, the data and all result tables are in a public GitHub repository [link].
+**Tools.** We used Python: PM4Py to read the log and build the handover networks, pandas to filter and store the data, NetworkX and SciPy to compute measures and run the tests, and Gephi for the figures. Data is stored as CSV edge lists and node tables, and as GEXF files for Gephi. The code, the data and all result tables are in a public GitHub repository (https://github.com/Kubrato/network-analysis-bpi2012).
 
 ## 4. Validity and Reliability
 
