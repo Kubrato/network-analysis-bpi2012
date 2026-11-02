@@ -1,7 +1,10 @@
-# Raw and event-level data are not shared here (see README for the download link)
+# Raw data: only the compressed log is stored (the unzipped .xes is 78 MB)
 data/raw/*
-data/processed/*
 !data/raw/.gitkeep
+!data/raw/BPI_Challenge_2012.xes.gz
+
+# Filtered events are recreated by the scripts
+data/processed/*
 !data/processed/.gitkeep
 
 # Python / system files
