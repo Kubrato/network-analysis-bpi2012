@@ -26,7 +26,9 @@ RAW, PROCESSED, EDGES = ROOT / "data" / "raw", ROOT / "data" / "processed", ROOT
 for d in (PROCESSED, EDGES):
     d.mkdir(parents=True, exist_ok=True)
 
-LOG_FILE = RAW / "BPI_Challenge_2012.xes"   # put the downloaded log in data/raw/
+# The log in data/raw/: the compressed file (stored on GitHub) or the unzipped one
+LOG_FILE = next((f for f in [RAW / "BPI_Challenge_2012.xes.gz", RAW / "BPI_Challenge_2012.xes"] if f.exists()),
+                RAW / "BPI_Challenge_2012.xes.gz")
 REVIEW_ACTIVITY = "W_Valideren aanvraag"   # final review step (validation of the application)
 SEED = 42                                   # fixed seed -> same sample every time (reliability)
 SYSTEM_RESOURCES = ["112"]                  # records every A_SUBMITTED event -> the system, not a person
