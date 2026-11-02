@@ -1,0 +1,11 @@
+# Raw and event-level data are not shared here (see README for the download link)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Python / system files
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/

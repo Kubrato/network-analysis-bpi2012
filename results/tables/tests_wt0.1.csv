@@ -1,0 +1,11 @@
+test,value,p_value
+qap_weighted,0.8398,0.0002
+qap_binary,0.6124,0.0002
+perm_density,-0.0112,0.5848
+perm_reciprocity,-0.0013,0.9441
+perm_avg_clustering,0.0417,0.0798
+perm_degree_centralisation,0.0534,0.0998
+spearman_betweenness_handover,0.8956,0.0
+spearman_betweenness_working_together,0.9067,0.0
+spearman_pagerank_authority_approved,0.9716,0.0
+spearman_pagerank_authority_declined,0.9616,0.0
