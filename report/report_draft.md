@@ -33,7 +33,7 @@ Our main contributions are:
 
 ## 3. Datasets
 
-**Source.** We use the BPI Challenge 2012 event log (van Dongen, 2012), published on 4TU.ResearchData. It is a secondary, electronic source: the data was not collected for network research, but recorded by the bank's workflow system between October 2011 and March 2012. It contains 13,087 loan applications (cases), 262,200 events and 68 resources. Employee IDs are anonymised numbers. We downloaded the file from a mirror and checked it against the official numbers (cases, events, resources); all matched. We cite the official DOI.
+**Source.** We use the BPI Challenge 2012 event log (van Dongen, 2012), published on 4TU.ResearchData. It is a secondary, electronic source: the data was not collected for network research, but recorded by the bank's workflow system between October 2011 and March 2012. It contains 13,087 loan applications (cases), 262,200 events and 68 resources. Employee IDs are anonymised numbers. The official 4TU page was not available when we downloaded the data, so we downloaded the file from a mirror on the GitLab server of CiTIUS, University of Santiago de Compostela (the same address used by the Verona process mining library; the full link is in the README). We checked it against the official numbers (cases, events, resources); all matched. We cite the official DOI.
 
 **What an event looks like.** Each event has a case ID, an activity name, a resource (employee), a timestamp and a lifecycle status. Activity names start with three prefixes: `A_` for states of the application (submitted, declined, approved...), `O_` for states of the offer sent to the customer, and `W_` for work items done by employees. The `W_` activities are in Dutch; for example, *W_Valideren aanvraag* means "validating the application" and *W_Nabellen offertes* means "calling the customer about the offer".
 
@@ -78,7 +78,7 @@ There are also omission errors. Phone calls, meetings and informal help between 
 
 Our filter is a conscious boundary decision with a cost. Our results hold for applications that reached the final review, not for all applications. Even after filtering, declined applications are a little shorter than approved ones (median 17 vs. 21 events per case), which we keep in mind when we interpret differences.
 
-**Reliability.** The data is public and the official numbers can be checked (13,087 cases, 262,200 events, 68 resources). Every filtering and transformation rule is written in the code and in this report. All random steps use a fixed seed (42): the sample of approved cases, the random graphs and the permutations. We also found that the community detection gave slightly different results from run to run, because it depends on the order in which nodes are added; we fixed this order, so the results are now identical every time. Anyone can download the repository and get exactly our numbers with two commands.
+**Reliability.** The data is public and the official numbers can be checked (13,087 cases, 262,200 events, 68 resources). Every filtering and transformation rule is written in the code and in this report. All random steps use a fixed seed (42): the sample of approved cases, the random graphs and the permutations. We also found that the community detection gave slightly different results from run to run, because it depends on the order in which nodes are added; we fixed this order, so the results are now identical every time. Anyone can download the repository and get exactly our numbers with three commands (see the README).
 
 **Ethics.** The employees are anonymised and the data was published for research. Still, a network can reveal individuals to people inside the organisation. For this reason we describe roles and positions, not the quality of individual people's work.
 
@@ -114,7 +114,7 @@ We start with measures that describe the overall shape of each network (Table 2)
 
 **Two blocks that follow the process.** The handover network splits into two communities. These communities are not random groups: one (44–48 people) contains the employees who handle new applications and prepare offers, the other (14–16 people) contains the employees who validate applications and call customers about their files (see Section 5.2). Modularity is low (0.17–0.20), so the boundary between the two blocks is weak: a lot of work crosses it, as it must, since every application passes from the first block to the second.
 
-**Some employees are more central.** Degree centralisation is moderate in the handover network (0.33–0.38) and higher in the working-together network (0.54–0.55). A few people share cases with a large part of the team.
+**Some employees are more central.** Degree centralisation is moderate in the handover network (0.33–0.38) and higher in the working-together network (0.54–0.55). A few people share cases with a large part of the team. For example, in the working-together network 11049 shares cases with 48 of the 61 other employees (approved) and 46 of the 59 others (declined), while the median employee has only 11–12 such ties.
 
 ### 5.2 Node measures: who is central, and why? (RQ1)
 
@@ -130,20 +130,22 @@ For each employee we computed:
 
 *Table 3. Selected central employees.*
 
-| Employee | Handover betweenness (appr. / decl.) | Authority (appr. / decl.) | Working-together betweenness (appr. / decl.) | Main activities |
-|---|---|---|---|---|
-| 10913 | 0.051 / 0.028 | 0.013 / 0.014 | – | completing applications, creating and sending offers |
-| 11180 | 0.037 / 0.028 | 0.010 / 0.015 | – | completing applications, creating and sending offers |
-| 10138 | 0.023 / 0.016 | **0.185** / 0.142 | 0.049 / – | validation, recording decisions |
-| 10609 | 0.033 / 0.049 | 0.134 / **0.231** | – / 0.112 | validation, recording decisions |
-| 10629 | 0.035 / 0.053 | 0.095 / 0.088 | – | validation, recording decisions |
-| 11049 | – | – | **0.146 / 0.155** | calling customers, receiving returned offers |
-| 10899 | – | – | 0.115 / 0.081 | calling customers, receiving returned offers |
-| 11259 | – | – | 0.106 / 0.091 | calling customers, receiving returned offers |
+| Employee | Handover betweenness (appr. / decl.) | Authority (appr. / decl.) | PageRank (appr. / decl.) | Working-together betweenness (appr. / decl.) | Main activities |
+|---|---|---|---|---|---|
+| 10913 | **0.051** / 0.028 | 0.013 / 0.014 | 0.029 / 0.034 | – | completing applications, creating and sending offers |
+| 11180 | 0.037 / 0.028 | 0.010 / 0.015 | 0.022 / 0.026 | – | completing applications, creating and sending offers |
+| 10138 | 0.023 / 0.016 | **0.185** / 0.142 | 0.056 / 0.045 | 0.049 / – | validation, recording decisions |
+| 10609 | 0.033 / 0.049 | 0.134 / **0.231** | 0.051 / **0.060** | – / 0.112 | validation, recording decisions |
+| 10629 | 0.035 / **0.053** | 0.095 / 0.088 | 0.034 / 0.035 | – | validation, recording decisions |
+| 11049 | – | – | **0.057** / 0.045 | **0.146 / 0.155** | calling customers, receiving returned offers |
+| 10899 | – | – | 0.044 / 0.039 | 0.115 / 0.081 | calling customers, receiving returned offers |
+| 11259 | – | – | 0.039 / 0.043 | 0.106 / 0.091 | calling customers, receiving returned offers |
+
+**Other measures.** 11049 also has the highest closeness in both handover networks (0.843 in both groups): they are only a few steps away from everyone. They receive work from more colleagues than anyone else (in-degree 50 approved, 48 declined), which is why their PageRank is high even though their handover betweenness is not: many cases pass through them, but they are not the only path between other people. In the working-together network, eigenvector centrality gives almost the same picture as betweenness. The top three are 11049 (0.275), 10899 (0.260) and 11259 (0.250) for approved cases, and 11259 (0.262), 11049 (0.250) and 10913 (0.241) for declined cases.
 
 The numbers alone tell us *who* is central. To understand *why*, we looked at which activities these employees perform. Three clear roles appear:
 
-1. **Front office (offer preparation): 10913, 11180.** They complete applications (*W_Completeren aanvraag*), create and send offers, and move applications to the offer stage. They are among the employees with the highest handover betweenness in both groups: they are the passage between the first contact with a customer and the rest of the process.
+1. **Front office (offer preparation): 10913, 11180.** They complete applications (*W_Completeren aanvraag*), create and send offers, and move applications to the offer stage. In the approved network they have the highest handover betweenness (in the declined network they are still in the top five, but behind the validators 10629 and 10609): they are the passage between the first contact with a customer and the rest of the process.
 2. **Follow-up (customer contact): 11049, 10899, 11259.** Most of their work is calling customers about offers and about incomplete files, and recording offers that customers send back (about 180–240 times each). They touch many applications at different stages, so they share cases with many colleagues from different groups. This makes them the main bridges in the working-together network, with betweenness two to three times higher than anyone else.
 3. **Validators (final review and decision): 10138, 10609, 10972, 10629, 10809.** Their main task is *W_Valideren aanvraag*. Together with one more colleague, six employees perform about 95% of all validations. They also record the outcome events (approval or decline). In the handover network they are the authorities: work ends up with them. This matches the meaning of HITS: an authority receives work from many good hubs.
 

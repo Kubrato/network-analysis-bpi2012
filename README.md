@@ -18,6 +18,11 @@ The log is included in this repository as `data/raw/BPI_Challenge_2012.xes.gz` (
 It is redistributed for research and teaching purposes; the original dataset, its licence (4TU General Terms of Use) and the official download are at the DOI above. Please cite the original source.
 Check: the log contains 13,087 cases, 262,200 events and 68 resources.
 
+Where our copy comes from: the official 4TU page was not available when we downloaded the data, so we took the file from a mirror on the GitLab server of CiTIUS (University of Santiago de Compostela). This is the same address that the Verona process mining library uses to download BPI Challenge 2012:
+https://gitlab.citius.usc.es/efren.rama/pmdlcompararator/-/raw/crossvalidation/raw_datasets/BPI_Challenge_2012.xes.gz?ref_type=heads
+We checked the file against the official numbers above (cases, events, resources); all matched.
+SHA-256 of our file: `0429a18ed3d9dec715ee2e76c36114edfdec059f5bb765aa29458a267e74feac`
+
 ## How to run
 ```bash
 pip install -r requirements.txt
