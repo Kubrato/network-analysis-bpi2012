@@ -27,7 +27,7 @@
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
-\author{K\"ubra Top\c{c}uo\u{g}lu, MA Digital Humanities and Digital Knowledge, [matricola]
+\author{K\"ubra Top\c{c}uo\u{g}lu, MA Digital Humanities and Digital Knowledge, 00001214604
 \\Daria Talanova, MA Digital Humanities and Digital Knowledge, [matricola]
 \\Maria Grigoryeva, MA Digital Humanities and Digital Knowledge, [matricola]
 \\Aizana Kuular, MA Digital Humanities and Digital Knowledge, [matricola]}
@@ -42,14 +42,12 @@
 
 The general field of this project is organisational studies, and more precisely business informatics: the study of how organisations work and how information systems support their work. The specific application is process mining combined with social network analysis.
 
-Most organisations today run their daily work through information systems. These systems keep an \emph{event log}: a record of which task was done, on which case (for example, a customer request), by whom, and when. Process mining uses these logs to rebuild how work really flows through an organisation, which is often different from how managers think it flows. Van der Aalst and Song (2004) showed that the same logs can also be used to build \emph{social networks} of employees. If employee A finishes a task and employee B does the next task on the same case, then A has handed work over to B. Collecting all these handovers gives a network of who works with whom, without asking anyone a single question.
-
-We apply this idea to a real, public event log of loan applications at a Dutch financial institute (BPI Challenge 2012). We build two kinds of employee networks and study them with the measures of the course.
+Information systems keep an \emph{event log}: a record of which task was done, on which case (for example, a customer request), by whom, and when. Process mining uses these logs to rebuild how work really flows through an organisation. Van der Aalst and Song (2004) showed that the same logs can also be used to build \emph{social networks} of employees: if employee A finishes a task and employee B does the next task on the same case, A has handed work over to B. Collecting all these handovers gives a network of who works with whom, without asking anyone a single question. We apply this idea to a public event log of loan applications at a Dutch financial institute (BPI Challenge 2012).
 
 \section{Problem and Motivation}
 \label{problem-and-motivation}
 
-Van der Aalst and Song (2004) proposed several metrics to derive social networks from event logs, such as \emph{handover of work} and \emph{working together}. Their paper only shows the method on small examples. A follow-up study (van der Aalst, Reijers and Song, 2005) applied the method to a real log of a Dutch public works office and checked the results with its managers, but that log is confidential, so the study cannot be repeated by others. In their conclusions, both papers suggest a further step that neither of them carries out: splitting cases into successful and unsuccessful ones and comparing the social networks behind them.
+Van der Aalst and Song (2004) proposed several metrics to derive social networks from event logs, such as \emph{handover of work} and \emph{working together}, but showed them only on small examples. A follow-up study (van der Aalst, Reijers and Song, 2005) applied the method to a real log of a Dutch public works office and checked the results with its managers, but that log is confidential, so the study cannot be repeated. Both papers suggest a further step that neither carries out: splitting cases into successful and unsuccessful ones and comparing the social networks behind them.
 
 We address two research questions:
 \begin{itemize}[itemsep=2pt]
@@ -57,22 +55,22 @@ We address two research questions:
   \item \textbf{RQ2.} Among applications that reached the final review, do approved and declined applications show different collaboration patterns?
 \end{itemize}
 
-These questions matter for two reasons. From a practical point of view, if failed cases followed different collaboration patterns (for example, more back-and-forth between colleagues, or dependence on a single person), managers could use this to redesign the process. From a theoretical point of view, the question tests whether the outcome of a case leaves a trace in the social structure of the work, or whether the structure is a stable property of the organisation.
+These questions matter for two reasons. Practically, if failed cases followed different collaboration patterns (for example, more back-and-forth between colleagues, or dependence on a single person), managers could use this to redesign the process. Theoretically, the question tests whether the outcome of a case leaves a trace in the social structure of the work, or whether that structure is a stable property of the organisation.
 
 Our main contributions are:
 \begin{enumerate}[itemsep=2pt]
   \item We reproduce the approach of van der Aalst and Song on a \textbf{public} dataset, with all code published, so that anyone can repeat the study.
   \item We carry out the \textbf{approved vs.\ declined comparison} suggested as future work by both papers, using permutation tests (QAP and a label-permutation test).
   \item We connect network positions to \textbf{process roles} by looking at which activities the central employees perform.
-  \item Following our teacher's remark on PageRank, we \textbf{check whether PageRank's out-degree normalisation makes sense} for handover networks, and compare it with HITS.
+  \item Because PageRank divides a node's score by its out-degree, we \textbf{examine whether this normalisation is meaningful} for handover networks, and compare PageRank with HITS.
 \end{enumerate}
 
 \section{Datasets}
 \label{datasets}
 
-\textbf{Source.} We use the BPI Challenge 2012 event log (van Dongen, 2012), published on 4TU.ResearchData. It is a secondary, electronic source: the data was not collected for network research, but recorded by the bank's workflow system between October 2011 and March 2012. It contains 13,087 loan applications (cases), 262,200 events and 68 resources. Employee IDs are anonymised numbers. The official 4TU page was not available when we downloaded the data, so we downloaded the file from a mirror on the GitLab server of CiTIUS, University of Santiago de Compostela (the same address used by the Verona process mining library; the full link is in the README). We checked it against the official numbers (cases, events, resources); all matched. We cite the official DOI.
+\textbf{Source.} We use the BPI Challenge 2012 event log (van Dongen, 2012). It is a secondary, electronic, publicly available source: it was not collected for network research but recorded by the bank's workflow system between October 2011 and March 2012, so no digitisation was needed. It contains 13,087 loan applications (cases), 262,200 events and 68 resources with anonymised IDs. Because the official 4TU.ResearchData page was unavailable at download time, we obtained the file from a public mirror on the GitLab server of CiTIUS, University of Santiago de Compostela (link in the repository README), checked that the numbers of cases, events and resources match the official ones, and cite the official DOI.
 
-\textbf{What an event looks like.} Each event has a case ID, an activity name, a resource (employee), a timestamp and a lifecycle status. Activity names start with three prefixes: \texttt{A\_} for states of the application (submitted, declined, approved\dots), \texttt{O\_} for states of the offer sent to the customer, and \texttt{W\_} for work items done by employees. The \texttt{W\_} activities are in Dutch; for example, \emph{W\_Valideren aanvraag} means ``validating the application'' and \emph{W\_Nabellen offertes} means ``calling the customer about the offer''.
+\textbf{What an event looks like.} Each event has a case ID, an activity name, a resource (employee), a timestamp and a lifecycle status. Activity names have three prefixes: \texttt{A\_} for states of the application (submitted, declined, approved\dots), \texttt{O\_} for states of the offer, and \texttt{W\_} for work items done by employees. The \texttt{W\_} activities are in Dutch; for example, \emph{W\_Valideren aanvraag} means ``validating the application'' and \emph{W\_Nabellen offertes} ``calling the customer about the offer''.
 
 \textbf{Filtering (the boundary of the network).} The research question decides which nodes and cases belong to the network. We applied the following rules, in this order:
 \begin{enumerate}[itemsep=2pt]
@@ -80,11 +78,11 @@ Our main contributions are:
   \item We labelled every case by its outcome: \emph{approved} if it contains \texttt{A\_APPROVED}, \emph{declined} if it contains \texttt{A\_DECLINED}, \emph{cancelled} if it contains \texttt{A\_CANCELLED}, otherwise \emph{open}.
   \item We kept only cases that reached the final review step, defined as containing the activity \emph{W\_Valideren aanvraag}.
   \item We kept only approved and declined cases.
-  \item We removed events without a resource (8,142 events in the full log) and the resource \texttt{112} (see below).
+  \item We removed events without a resource (8,142 completed events in the full log) and the resource \texttt{112} (see below).
   \item We drew the same number of cases from both groups (754 each, random seed 42).
 \end{enumerate}
 
-Table~\ref{tab:outcomes} shows why step 3 is necessary. Every approved application went through the final review, but 90\% of declined applications were rejected before it, most of them automatically, right after submission. These early rejections contain almost no human work. Had we kept them, the ``declined'' network would have looked sparse only because those cases are short, not because people collaborate differently.
+Table~\ref{tab:outcomes} shows why step 3 is necessary. Every approved application went through the final review, but 90\% of declined applications were rejected before it, most of them automatically, right after submission. These early rejections contain almost no human work; keeping them would make the ``declined'' network sparse only because its cases are short.
 
 \begin{table}[h]
 \centering
@@ -102,39 +100,82 @@ Open      & 399   & 51 \\
 \end{tabular}
 \end{table}
 
-We compare approved with declined applications only. Cancellations are mostly the customer's own choice, not the bank's decision, so they answer a different question. Since only 754 declined applications reached the final review, we used all of them and a random sample of 754 of the 2,246 approved ones. Equal groups matter because a larger group would produce a denser network just because it contains more cases.
+Cancellations are mostly the customer's own choice, not the bank's decision, so we left them out. We used all 754 declined cases and a random sample of 754 of the 2,246 approved ones, because a larger group would produce a denser network simply by containing more cases. Resource \texttt{112} records only automatic state changes (\texttt{A\_SUBMITTED}, \texttt{A\_PARTLYSUBMITTED}, \texttt{A\_PREACCEPTED}, 4,065 events): it is the system, not a person, and would appear as an artificial hub, so we removed it. The final dataset has 1,508 cases, 32,059 events and 62 employees.
 
-Resource \texttt{112} records 4,065 events, more than any employee. All of them are automatic state changes (\texttt{A\_SUBMITTED}, \texttt{A\_PARTLYSUBMITTED}, \texttt{A\_PREACCEPTED}), and it records every submission. It is the system, not a person, so we removed it; left in, it would appear as an artificial hub. The final dataset has 1,508 cases, 32,059 events and 62 employees (62 in the approved group, 60 in the declined group).
-
-\textbf{Building the networks.} The raw data is a two-mode structure (employees $\times$ cases). We turned it into two one-mode employee networks per group, following the definitions of van der Aalst and Song (2004):
+\textbf{Building the networks.} The raw data is a two-mode structure (employees $\times$ cases). Following van der Aalst and Song (2004), we projected it into two kinds of one-mode employee networks:
 \begin{itemize}[itemsep=2pt]
-  \item \textbf{Handover of work} (directed, weighted). There is a tie A $\rightarrow$ B if, within a case, a task done by A is directly followed by a task done by B. The weight is the share of all handovers that go from A to B. Self-loops (A followed by A) are removed: they describe one person continuing their own work, not collaboration. They are, however, very common: about two thirds of all direct successions stay with the same person.
-  \item \textbf{Working together} (undirected, weighted). Following Definition 4.5 of the paper, the weight from A to B is the number of cases A and B share divided by the number of cases of A. We computed this ourselves, because PM4Py divides by the number of events, which gives values that are hard to interpret. Since this measure is not symmetric, we symmetrised it by averaging the two directions. Almost everybody shares at least one case with almost everybody, so we dichotomised the network and kept only ties with weight $\geq 0.2$ (on average, the two people share at least 20\% of their cases). We report a threshold of 0.1 as a robustness check.
+  \item \textbf{Handover of work} (directed, weighted). There is a tie A $\rightarrow$ B if, within a case, a task done by A is directly followed by a task done by B. The weight is the share of all handovers that go from A to B. Self-loops (A followed by A) are removed: they describe one person continuing their own work, not collaboration, although about two thirds of all direct successions are of this kind.
+  \item \textbf{Working together} (undirected). Following Definition 4.5 of the paper, the weight from A to B is the number of cases A and B share divided by the number of cases of A. We computed this ourselves, because PM4Py divides by the number of events instead. We symmetrised the weights by averaging the two directions. Since almost everybody shares at least one case with almost everybody, we dichotomised the network, keeping ties with weight $\geq 0.2$ (on average, the two people share at least 20\% of their cases); a threshold of 0.1 serves as a robustness check.
 \end{itemize}
 
-We adopt a whole-network design: within the boundary above, all employees and all ties among them are included.
+Building both kinds for both groups gives the four networks analysed in this study (Table~\ref{tab:networks}). We adopt a whole-network design: within the boundary above, all employees and all ties among them are included.
 
-\textbf{Tools.} We used Python: PM4Py to read the log and build the handover networks, pandas to filter and store the data, NetworkX and SciPy to compute measures and run the tests, Gephi to explore the networks, and Matplotlib for the figures in this report. Data is stored as CSV edge lists and node tables, and as GEXF files for Gephi. The code, the data and all result tables are in a public GitHub repository (\url{https://github.com/Kubrato/network-analysis-bpi2012}).
+\begin{table}[h]
+\centering
+\small
+\caption{The four networks of the study. In all of them, a node is an employee.}
+\label{tab:networks}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{lcYc}
+\toprule
+Network & Shape & Edge (when it exists) & Direction / weight \\
+\midrule
+Handover, approved & one-mode & A's task is directly followed by B's task in the same approved case & directed, weighted \\
+Handover, declined & one-mode & same, in declined cases & directed, weighted \\
+Working together, approved & one-mode & A and B share at least 20\% of their approved cases & undirected, binary \\
+Working together, declined & one-mode & same, in declined cases & undirected, binary \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Tools.} We used Python: PM4Py to read the log and build the handover networks, pandas to filter and store the data, NetworkX and SciPy to compute measures and run the tests, Gephi to explore the networks, and Matplotlib for the figures. Data is stored as CSV edge lists and node tables, and as GEXF files for Gephi. The code, data and all result tables are in a public GitHub repository (\url{https://github.com/Kubrato/network-analysis-bpi2012}).
 
 \section{Validity and Reliability}
-\label{validity-and-reliability-not-needed-for-the-project-proposal}
+\label{validity-and-reliability}
 
-\textbf{Validity.} Our networks show \emph{recorded} collaboration only. A handover tie means that two people worked on the same case one after the other; it does not prove that they talked to each other. This is the edge attribution problem discussed in class: we assume a relation from a sequence of tasks. On the other hand, a handover is a real dependency in the work, since B can only continue once A has finished. Van der Aalst, Reijers and Song (2005) found that handover networks matched what managers knew about their organisation, which supports this reading.
+\textbf{Validity.} Our networks show \emph{recorded} collaboration only. A handover tie means that two people worked on the same case one after the other; it does not prove that they talked to each other. This is a possible edge attribution error (Giallorenzo, n.d.; Borgatti, Everett and Johnson, 2018, Section 3.8): we infer a relation from a sequence of tasks. A useful check for secondary data is to ask which survey question a tie would answer (Giallorenzo, n.d.). For a handover tie, the question would be ``From whom did you take over the work on this application?'', a question about the workflow, not about personal contact. On the other hand, a handover is a real dependency in the work, since B can only continue once A has finished, and van der Aalst et al.\ (2005) found that handover networks matched what managers knew about their organisation.
 
-There are also omission errors. Phone calls, meetings and informal help between colleagues are not in the log. The 8,142 events without a resource are also lost; we cannot know who did them. Commission errors are possible as well: the person who \emph{records} a decision (for example \texttt{A\_DECLINED}) is not necessarily the person who \emph{made} it. Finally, as van der Aalst et al.\ (2005) warn, when a workflow system assigns tasks, the network partly reflects the design of the system and not only the choices of people.
+There are also omission errors: phone calls, meetings and informal help are not in the log, and the 8,142 completed events without a resource cannot be attributed. Node attribution errors are possible too: the person who \emph{records} a decision (for example \texttt{A\_DECLINED}) is not necessarily the person who \emph{made} it (in 67 of the 754 declined cases, the person who recorded the decline did not validate the application), which can create ties that do not exist (commission errors). Finally, when a workflow system assigns tasks, the network partly reflects the design of the system and not only the choices of people (van der Aalst et al., 2005).
 
-Our filter is a conscious boundary decision with a cost. Our results hold for applications that reached the final review, not for all applications. Even after filtering, declined applications are a little shorter than approved ones (median 17 vs.\ 21 events per case), which we keep in mind when we interpret differences.
+Our filter is a conscious boundary decision: results hold for applications that reached the final review, not for all applications. Even after filtering, declined applications are a little shorter than approved ones (median 17 vs.\ 21 events per case), which we keep in mind when interpreting differences.
 
-\textbf{Reliability.} The data is public and the official numbers can be checked (13,087 cases, 262,200 events, 68 resources). Every filtering and transformation rule is written in the code and in this report. All random steps use a fixed seed (42): the sample of approved cases, the random graphs and the permutations. We also found that the community detection gave slightly different results from run to run, because it depends on the order in which nodes are added; we fixed this order, so the results are now identical every time. Anyone can download the repository and get exactly our numbers with three commands (see the README).
+\textbf{Reliability.} The data is public and the official counts can be checked. Every filtering and transformation rule is written in the code and in this report. All random steps (the sample of approved cases, the random graphs and the permutations) use a fixed seed (42). Community detection initially varied between runs because it depends on node order; we fixed this order, so results are identical every time. Following the instructions in the repository, anyone can reproduce exactly our numbers.
 
-\textbf{Ethics.} The employees are anonymised and the data was published for research. Still, a network can reveal individuals to people inside the organisation. For this reason we describe roles and positions, not the quality of individual people's work.
+\textbf{Ethics.} The employees are anonymised and the data was published for research. Still, a network can reveal individuals to people inside the organisation, so we describe roles and positions, not the quality of individual people's work.
 
 \section{Measures and Results}
 \label{measures}
 
-\subsection{Whole-network measures (RQ1)}
+Table~\ref{tab:measures} lists the measures we applied, the phenomenon each one investigates, and what it means in our networks (definitions follow Newman, 2018). To see whether a whole-network value is ``special'', we compare it with 20 Erd\H{o}s--R\'enyi random graphs $G(n, m)$ with the same number of nodes and ties.
 
-We start with measures that describe the overall shape of each network (Table~\ref{tab:whole}). To see whether a value is ``special'', we compare it with 20 Erd\H{o}s--R\'enyi random graphs $G(n, m)$ with the same number of nodes and ties. Small-worldness is $\sigma = (C / C_{\text{random}}) / (L / L_{\text{random}})$, where $C$ is the average clustering and $L$ the average path length; $\sigma > 1$ means a small-world network. Communities were found with greedy modularity maximisation; modularity $Q$ measures how much more often ties fall inside groups than expected at random.
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{Applied measures, the phenomenon they investigate and their meaning in our networks.}
+\label{tab:measures}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}Yc}
+\toprule
+Measure & Phenomenon & Meaning in our networks & RQ \\
+\midrule
+Density, average degree & Cohesion & How many of the possible pairs of colleagues actually pass work or share cases & 1, 2 \\
+Components, diameter, average path length & Connectedness, reachability & Whether a case can reach any employee, and in how many handovers & 1 \\
+Average clustering vs.\ random graphs; $\sigma = (C/C_{\text{rand}})/(L/L_{\text{rand}})$ & Local cohesion, small world & Whether employees work in tight groups linked by short paths & 1, 2 \\
+Degree centralisation & Dominance of a few nodes & Whether the work depends on a few people & 1, 2 \\
+Reciprocity & Mutual ties & Whether applications go back and forth rather than along a line & 1, 2 \\
+Communities (greedy modularity), modularity $Q$ & Groups & Whether teams correspond to stages of the process & 1 \\
+Betweenness & Brokerage & Employees who carry work between stages or groups & 1, 2 \\
+Closeness & Proximity & Employees who are few handovers away from everyone & 1 \\
+HITS hub / authority & Sending / receiving in directed flows & Hubs pass work on; authorities are where work ends up (decisions) & 1, 2 \\
+Weighted PageRank & Flow-based importance & Share of time a case spends with an employee & 1 \\
+Eigenvector centrality & Prestige & Working with well-connected colleagues (working-together network) & 1 \\
+QAP, label permutation, Spearman $\rho$ & Similarity / difference between networks & Whether approved and declined cases are handled differently & 2 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Whole-network measures (RQ1)}
 
 \begin{table}[h]
 \centering
@@ -185,16 +226,7 @@ Communities / modularity & 2 / 0.17 & 2 / 0.20 & 6 / 0.13 & 5 / 0.13 \\
 \subsection{Node measures: who is central, and why? (RQ1)}
 \label{sec:nodes}
 
-For each employee we computed:
-\begin{itemize}[itemsep=2pt]
-  \item \textbf{Betweenness}: how often a person lies on the shortest paths between two others. High values mark brokers who connect parts of the network.
-  \item \textbf{Closeness}: how close a person is to everyone else on average.
-  \item \textbf{HITS} (hubs and authorities): in a directed network, a good \emph{authority} receives work from good hubs, and a good \emph{hub} passes work to good authorities.
-  \item \textbf{Weighted PageRank}: a person's importance, passed on to the people they hand work to.
-  \item \textbf{Eigenvector centrality} for the undirected working-together network: a person is important if they work with important people.
-\end{itemize}
-
-\textbf{A note on PageRank.} Our teacher pointed out that PageRank divides a node's importance by its out-degree, and that this has to make sense for the relation in the network. We think it does for weighted handovers. When the weights are divided by the total weight leaving A, they become the probability that a case goes from A to B next. PageRank can then be read as the share of time a case spends with each employee while it moves through the team. Its weakest assumption is the random ``jump'' (15\% of the time the case jumps to a random employee), which does not happen in reality. For the undirected working-together network, PageRank adds little to degree, so we use eigenvector centrality there. We also compared PageRank with HITS authority: the rankings are almost the same (Spearman $\rho = 0.97$ for approved, $0.96$ for declined), and 8 of the top 10 employees are shared. Our conclusions therefore do not depend on the out-degree normalisation.
+\textbf{Is PageRank meaningful here?} PageRank divides a node's importance by its out-degree, and this has to make sense for the relation in the network. We argue that it does for weighted handovers. When the weights are divided by the total weight leaving A, they become the probability that a case goes from A to B next, so PageRank can be read as the share of time a case spends with each employee while it moves through the team. Its weakest assumption is the random ``jump'' (15\% of the time the case jumps to a random employee), which does not happen in reality. For the undirected working-together network, PageRank adds little to degree, so we use eigenvector centrality there. PageRank and HITS authority give almost the same rankings (Spearman $\rho = 0.97$ for approved, $0.96$ for declined), and 8 of the top 10 employees are shared. Our conclusions therefore do not depend on the out-degree normalisation.
 
 \begin{table}[h]
 \centering
@@ -272,6 +304,7 @@ The two handover networks are strongly and significantly similar (QAP $r = 0.84$
 The one visible difference is at the end of the process, among the validators. Since the groups have the same size, we can compare counts directly. Employee 10609 records 27\% of declines but 16\% of approvals, while 10138 records 30\% of approvals and 21\% of declines. This explains why 10609 is the strongest authority in the declined network and 10138 in the approved one. This is a description, not an explanation: 10609 may receive harder files, may be more senior, or may simply record decisions taken by others. The log does not tell us which.
 
 \subsection{Robustness check}
+\label{sec:robustness}
 
 With a working-together threshold of 0.1 instead of 0.2, the network is much denser (0.56--0.59), has fewer communities (3) and a weaker small-world effect ($\sigma \approx 1.4$), as expected. However, the main findings do not change: approved and declined networks remain very similar (betweenness $\rho = 0.91$), and the same follow-up employees remain the main bridges. The handover results do not depend on this threshold.
 
@@ -287,15 +320,17 @@ This ``null result'' is useful in itself. It indicates that the collaboration st
 \section{Critique}
 \label{critique}
 
-Our work answers RQ1 well: we describe the structure of the network and, through activity profiles, explain the role of the central employees. It answers RQ2 only partly. We can say that we found no significant difference in the measures we tested, with 754 cases per group; we cannot say that no difference exists. Several choices limit our conclusions:
+\textbf{To what extent are the problems solved?} RQ1 is answered well: the measures describe the structure of the network, and the activity profiles explain the role of the central employees. However, the roles were inferred from the same log, not from an independent source such as an organisation chart, so the match between network positions and roles is plausible but not externally confirmed. RQ2 is answered only partly. We found no significant difference in the measures we tested, with 754 cases per group, but we cannot say that no difference exists. A null result depends on the power of the tests, and we did not estimate how large a difference our design could detect.
+
+\textbf{What we could have done differently.}
 \begin{itemize}[itemsep=2pt]
-  \item \textbf{Recorded work only.} Handover and working-together ties come from the log. Informal collaboration, which might differ between difficult and easy cases, is invisible. Interviews or a survey of employees would be needed to validate the ties, as van der Aalst et al.\ (2005) did with managers.
-  \item \textbf{Who decides?} The person who records \texttt{A\_DECLINED} may not be the one who makes the decision. Information about formal roles or team membership would allow us to test this.
+  \item \textbf{Validating ties and decisions.} Section~\ref{validity-and-reliability} describes the main validity limits: informal collaboration is not in the log, and the person who records a decision may not be the one who made it. Interviews or a survey of employees could validate the ties, as van der Aalst et al.\ (2005) did with managers. Data on formal roles would show who actually decides, and would give an independent attribute to test homophily (do employees with the same role work together more?).
+  \item \textbf{Edge definition.} A handover counts only direct succession and ignores how long the case waited in between: a handover after five minutes and one after five days are the same tie. Weighting ties by time, or using other metrics proposed by van der Aalst and Song (for example subcontracting), might show differences that direct succession hides.
   \item \textbf{One sample.} We used one random sample of approved applications. Repeating the analysis with many samples would show how stable the numbers are.
-  \item \textbf{Limited tests.} The permutation test covered four whole-network measures on the unweighted handover network. Weighted measures, or a test of node-level differences for the validators, could reveal smaller effects. The clustering difference ($p = 0.08$) might become significant with more data.
-  \item \textbf{Time.} We treated six months as one network. Teams and workload may change over time; a sequence of monthly networks would show this.
+  \item \textbf{Limited tests.} The permutation test covered four whole-network measures on the unweighted handover network. Weighted measures, or a node-level test for the validators, could reveal smaller effects. The clustering difference ($p = 0.08$) might become significant with more data.
+  \item \textbf{Time.} We treated six months as one network. Teams and workload may change; a sequence of monthly networks would show this.
   \item \textbf{Other models.} Case attributes, such as the amount requested, could be added to test whether case features predict the outcome better than the collaboration structure. Exponential random graph models (ERGM) could test several effects at the same time.
-  \item \textbf{Thresholds.} The working-together network depends on the threshold. We checked two values (0.1 and 0.2); a wider range would make this result stronger.
+  \item \textbf{Thresholds.} We checked two working-together thresholds (Section~\ref{sec:robustness}); a wider range would make this result stronger.
 \end{itemize}
 
 Despite these limits, the study shows that the method of van der Aalst and Song works on a large public log and can be fully reproduced, and that it reveals a clear and interpretable structure of work.
@@ -311,7 +346,13 @@ Despite these limits, the study shows that the method of van der Aalst and Song 
 \item van Dongen, B.\,F. (2012). \emph{BPI Challenge 2012} [Data set]. 4TU.ResearchData. \url{https://doi.org/10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f}
 \item Berti, A., van Zelst, S.\,J., \& van der Aalst, W.\,M.\,P. (2019). Process Mining for Python (PM4Py): Bridging the gap between process- and data science. \emph{ICPM Demo Track}. arXiv:1905.06169
 
+\item Borgatti, S.\,P., Everett, M.\,G., \& Johnson, J.\,C. (2018). \emph{Analyzing Social Networks} (2nd ed.). SAGE.
+
+\item Giallorenzo, S. (n.d.). \emph{Research design (also, how to read a research paper)} [Lecture slides]. Network Analysis, MA Digital Humanities and Digital Knowledge, University of Bologna.
+
 \item Hagberg, A., Schult, D., \& Swart, P. (2008). Exploring network structure, dynamics, and function using NetworkX. \emph{Proceedings of the 7th Python in Science Conference}, 11--15.
+
+\item Newman, M.\,E.\,J. (2018). \emph{Networks} (2nd ed.). Oxford University Press.
 \end{list}
 
 \end{document}
