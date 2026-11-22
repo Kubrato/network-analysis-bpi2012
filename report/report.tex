@@ -275,7 +275,7 @@ We tested the difference between the two groups in three ways.
 
 \textbf{QAP correlation (dyadic level).} We correlated the two handover adjacency matrices and compared the result with 5,000 random relabellings of one of them (the rows and columns are shuffled together, which keeps the structure of the network but breaks the link between labels). H0: the two networks are not more similar than random.
 
-\textbf{Label-permutation test (whole-network level).} We shuffled the labels ``approved'' and ``declined'' among the 1,508 cases 500 times, rebuilt both handover networks each time, and checked how often the random difference in density, reciprocity, clustering and centralisation was as large as the real one. H0: the outcome of a case does not change these measures.
+\textbf{Label-permutation test (whole-network level).} We shuffled the labels ``approved'' and ``declined'' among the 1,508 cases 500 times, rebuilt both (unweighted) handover networks each time, and checked how often the random difference in density, reciprocity, clustering and centralisation was as large as the real one. H0: the outcome of a case does not change these measures.
 
 \textbf{Rank correlation of betweenness (node level).} We compared the betweenness rankings of the employees that appear in both groups with Spearman's $\rho$.
 
@@ -301,12 +301,12 @@ Spearman $\rho$, working-together betweenness & 0.77 & $< 0.001$ \\
 
 The two handover networks are strongly and significantly similar (QAP $r = 0.84$; 0.0002 is the smallest $p$-value possible with 5,000 permutations). None of the whole-network differences is significant at the 5\% level. The approved network is slightly more clustered and more centralised ($p = 0.08$ and $0.10$), which we report only as a weak tendency. The same employees are central in both groups ($\rho = 0.90$ and $0.77$), and the handover communities contain almost exactly the same people.
 
-The one visible difference is at the end of the process, among the validators. Since the groups have the same size, we can compare counts directly. Employee 10609 records 27\% of declines but 16\% of approvals, while 10138 records 30\% of approvals and 21\% of declines. This explains why 10609 is the strongest authority in the declined network and 10138 in the approved one. This is a description, not an explanation: 10609 may receive harder files, may be more senior, or may simply record decisions taken by others. The log does not tell us which.
+The one visible difference is at the end of the process, among the validators. Since the groups have the same size, we can compare counts directly. Employee 10609 records 27\% of declines but 16\% of approvals, while 10138 records 30\% of approvals and 21\% of declines. This helps explain why 10609 is the strongest authority in the declined network and 10138 in the approved one. This is a description, not an explanation: 10609 may receive harder files, may be more senior, or may simply record decisions taken by others. The log does not tell us which.
 
 \subsection{Robustness check}
 \label{sec:robustness}
 
-With a working-together threshold of 0.1 instead of 0.2, the network is much denser (0.56--0.59), has fewer communities (3) and a weaker small-world effect ($\sigma \approx 1.4$), as expected. However, the main findings do not change: approved and declined networks remain very similar (betweenness $\rho = 0.91$), and the same follow-up employees remain the main bridges. The handover results do not depend on this threshold.
+With a working-together threshold of 0.1 instead of 0.2, the network is much denser (0.56--0.59), has fewer communities (3) and a weaker small-world effect ($\sigma \approx 1.4$), as expected. However, the main findings do not change: approved and declined networks remain very similar (working-together betweenness $\rho = 0.91$), and 11049 is still the strongest bridge in both groups. Betweenness becomes much flatter (the highest value falls from about 0.15 to 0.03), because in a denser network most people are directly connected, so the other follow-up employees lose their special position (10899 ranks 5th/3rd, 11259 8th/6th). The handover results do not depend on this threshold.
 
 \section{Conclusion}
 \label{conclusion}
