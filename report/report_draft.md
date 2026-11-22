@@ -7,27 +7,27 @@ Aizana Kuular, MA Digital Humanities and Digital Knowledge, [matricola]
 
 ## 1. Introduction
 
-The general field of this project is organisational studies, and more precisely business informatics: the study of how organisations work and how information systems support their work. The specific application is process mining combined with social network analysis.
+The broad field of this project is organisational studies, and more specifically business informatics: the study of how organisations work and how information systems support their work. The particular application is process mining combined with social network analysis.
 
-Information systems keep an *event log*: a record of which task was done, on which case (for example, a customer request), by whom, and when. Process mining uses these logs to rebuild how work really flows through an organisation. Van der Aalst and Song (2004) showed that the same logs can also be used to build *social networks* of employees: if employee A finishes a task and employee B does the next task on the same case, A has handed work over to B. Collecting all these handovers gives a network of who works with whom, without asking anyone a single question. We apply this idea to a public event log of loan applications at a Dutch financial institute (BPI Challenge 2012).
+Information systems keep an *event log*. For every event, the log shows which task was done, on which case (for instance, a client request), who did it and when. Process mining uses these logs to see how work truly travels through an organisation. Van der Aalst and Song (2004) demonstrated that these same logs can also be converted into *social networks* of employees. Imagine employee A completes a task and employee B does the next task on the same case. Then A has passed the work on to B. If we combine all these handovers, we get a network of who works with whom. No one has to be interviewed or fill in a survey. We apply this concept to a public event log of loan applications at a Dutch financial institute (BPI Challenge 2012).
 
 ## 2. Problem and Motivation
 
-Van der Aalst and Song (2004) proposed several metrics to derive social networks from event logs, such as *handover of work* and *working together*, but showed them only on small examples. A follow-up study (van der Aalst, Reijers and Song, 2005) applied the method to a real log of a Dutch public works office and checked the results with its managers, but that log is confidential, so the study cannot be repeated. Both papers suggest a further step that neither carries out: splitting cases into successful and unsuccessful ones and comparing the social networks behind them.
+Van der Aalst and Song (2004) introduced various metrics to extract social networks from event logs, such as *handover of work* and *working together*, but demonstrated them only on small illustrative examples. A follow-up study (van der Aalst, Reijers and Song, 2005) used the method on an actual log of a Dutch public works office and verified the results with its managers, but that log is private, so the study cannot be replicated. Both papers propose a further step that neither carries out: dividing cases into successful and unsuccessful ones and contrasting the social networks behind them.
 
-We address two research questions:
+We tackle two research questions:
 
 - **RQ1.** What does the collaboration network of the bank look like? Who are the central employees, who are the brokers, and are there groups?
 - **RQ2.** Among applications that reached the final review, do approved and declined applications show different collaboration patterns?
 
-These questions matter for two reasons. Practically, if failed cases followed different collaboration patterns (for example, more back-and-forth between colleagues, or dependence on a single person), managers could use this to redesign the process. Theoretically, the question tests whether the outcome of a case leaves a trace in the social structure of the work, or whether that structure is a stable property of the organisation.
+These questions are important for two reasons. In practice, if unsuccessful cases showed distinct collaboration patterns (for instance, more back-and-forth between co-workers, or reliance on a single person), managers could use this to restructure the process. From a theoretical standpoint, the question tests whether the outcome of a case leaves a mark in the social structure of the work, or whether that structure is a persistent property of the organisation.
 
-Our main contributions are:
+Our principal contributions are:
 
-1. We reproduce the approach of van der Aalst and Song on a **public** dataset, with all code published, so that anyone can repeat the study.
-2. We carry out the **approved vs. declined comparison** suggested as future work by both papers, using permutation tests (QAP and a label-permutation test).
-3. We connect network positions to **process roles** by looking at which activities the central employees perform.
-4. Because PageRank divides a node's score by its out-degree, we **examine whether this normalisation is meaningful** for handover networks, and compare PageRank with HITS.
+1. We re-implement the methodology of van der Aalst and Song on a **public** dataset, with all code published, so that anyone can replicate the study.
+2. We carry out the **approved vs. declined comparison** proposed as future work by both papers, via permutation tests (QAP and a label-permutation test).
+3. We link network positions to **process roles** by examining which activities the central employees carry out.
+4. Since PageRank divides a node's score by its out-degree, we **examine whether this normalisation is meaningful** for handover networks, and contrast PageRank with HITS.
 
 ## 3. Datasets
 
@@ -89,24 +89,24 @@ Our filter is a conscious boundary decision: results hold for applications that 
 
 ## 5. Measures and Results
 
-Table 3 lists the measures we applied, the phenomenon each one investigates, and what it means in our networks (definitions follow Newman, 2018). To see whether a whole-network value is "special", we compare it with 20 Erdős–Rényi random graphs G(n, m) with the same number of nodes and ties.
+Table 3 lists the measures we used, the phenomenon each one studies, and what it signifies in our networks (definitions follow Newman, 2018). To see whether a whole-network value is "special", we contrast it with 20 Erdős–Rényi random graphs G(n, m) with the same number of nodes and ties.
 
 *Table 3. Applied measures, the phenomenon they investigate and their meaning in our networks.*
 
 | Measure | Phenomenon | Meaning in our networks | RQ |
 |---|---|---|---|
-| Density, average degree | Cohesion | How many of the possible pairs of colleagues actually pass work or share cases | 1, 2 |
-| Components, diameter, average path length | Connectedness, reachability | Whether a case can reach any employee, and in how many handovers | 1 |
-| Average clustering vs. random graphs; small-worldness σ = (C/C_rand)/(L/L_rand) | Local cohesion, small world | Whether employees work in tight groups linked by short paths | 1, 2 |
-| Degree centralisation | Dominance of a few nodes | Whether the work depends on a few people | 1, 2 |
-| Reciprocity | Mutual ties | Whether applications go back and forth rather than along a line | 1, 2 |
-| Communities (greedy modularity), modularity Q | Groups | Whether teams correspond to stages of the process | 1 |
-| Betweenness | Brokerage | Employees who carry work between stages or groups | 1, 2 |
-| Closeness | Proximity | Employees who are few handovers away from everyone | 1 |
-| HITS hub / authority | Sending / receiving in directed flows | Hubs pass work on; authorities are where work ends up (decisions) | 1, 2 |
-| Weighted PageRank | Flow-based importance | Share of time a case spends with an employee | 1 |
-| Eigenvector centrality | Prestige | Working with well-connected colleagues (working-together network) | 1 |
-| QAP, label permutation, Spearman ρ | Similarity / difference between networks | Whether approved and declined cases are handled differently | 2 |
+| Density, average degree | Cohesion | What share of all possible pairs of colleagues really pass work or share cases | 1, 2 |
+| Components, diameter, average path length | Connectedness, reachability | Whether a case can get to every employee, and how many handovers it takes | 1 |
+| Average clustering vs. random graphs, small-worldness σ = (C/C_rand)/(L/L_rand) | Local cohesion, small world | Whether employees form close groups joined by short paths | 1, 2 |
+| Degree centralisation | Dominance of a few nodes | Whether the work relies on a small number of people | 1, 2 |
+| Reciprocity | Mutual ties | Whether applications move in both directions instead of in one line | 1, 2 |
+| Communities (greedy modularity), modularity Q | Groups | Whether teams match the steps of the process | 1 |
+| Betweenness | Brokerage | Employees who move work from one step or group to another | 1, 2 |
+| Closeness | Proximity | Employees who can reach everyone in a few handovers | 1 |
+| HITS hub / authority | Sending / receiving in directed flows | Hubs send work on, authorities receive it at the end (decisions) | 1, 2 |
+| Weighted PageRank | Flow-based importance | How much of its time a case spends with an employee | 1 |
+| Eigenvector centrality | Prestige | Sharing cases with colleagues who are well connected themselves (working-together network) | 1 |
+| QAP, label permutation, Spearman ρ | Similarity / difference between networks | Whether approved and declined cases are processed in a different way | 2 |
 
 ### 5.1 Whole-network measures (RQ1)
 
@@ -128,23 +128,23 @@ Table 3 lists the measures we applied, the phenomenon each one investigates, and
 | Reciprocity | 0.69 | 0.69 | – | – |
 | Communities / modularity | 2 / 0.17 | 2 / 0.20 | 6 / 0.13 | 5 / 0.13 |
 
-**A small, tightly connected team.** In the handover network every employee belongs to one component, and any employee can reach any other in at most three steps (1.5 on average). The density of about 0.4 is much higher than the 0.225 found by van der Aalst et al. (2005) in the public works office. The two processes are different, so we only note that this bank team is very interconnected.
+**A small, tightly connected team.** In the handover network every employee belongs to one component, and any employee can reach any other in at most three hops (1.5 on average). The density of about 0.4 is considerably greater than the 0.225 observed by van der Aalst et al. (2005) in the public works office. The two processes are distinct, so we only observe that this bank team is highly interconnected.
 
-**Work flows back and forth.** Reciprocity is 0.69: most handovers from A to B are matched by handovers from B to A. Work does not move along an assembly line in one direction; applications go back and forth between employees, for example when a customer has to be called again about missing documents.
+**Work flows back and forth.** Reciprocity is 0.69: most handovers from A to B are mirrored by handovers from B to A. Work does not travel along an assembly line in one direction. Applications go back and forth between employees, for instance when a client has to be called again about missing documents.
 
-**Small-world structure.** Clustering is clearly higher than in random graphs of the same size (0.82 vs. 0.51 in the approved handover network), while path lengths are almost the same. Both networks are small worlds (σ > 1). The effect is stronger in the working-together network (σ ≈ 2.4–2.7): once weak ties are removed, people work in tight groups that are linked by short paths.
+**Small-world structure.** Clustering is markedly greater than in random graphs of the same size (0.82 vs. 0.51 in the approved handover network), while path lengths are almost the same. Both networks are small worlds (σ > 1). The effect is stronger in the working-together network (σ ≈ 2.4–2.7): once weak ties are discarded, individuals work in cohesive groups that are linked by short paths.
 
-**Two blocks that follow the process.** The handover network splits into two communities. These communities are not random groups: one (44–48 people) contains the employees who handle new applications and prepare offers, the other (14–16 people) contains the employees who validate applications and call customers about their files (see Section 5.2). Modularity is low (0.17–0.20), so the boundary between the two blocks is weak: a lot of work crosses it, as it must, since every application passes from the first block to the second (Figure 1).
+**Two blocks that follow the process.** The handover network divides into two communities. These communities are not random groups: one (44–48 individuals) includes the employees who process new applications and prepare offers, the other (14–16 individuals) includes the employees who validate applications and call clients about their dossiers (see Section 5.2). Modularity is low (0.17–0.20), so the border between the two blocks is weak: a lot of work traverses it, as it must, since every application passes from the first block to the second (Figure 1).
 
 ![Figure 1](../results/figures/handover.png)
 
-*Figure 1. Handover-of-work networks for approved (left) and declined (right) applications. Node size is HITS authority; colour is the community. The validators (orange) form the smaller block that receives work at the end of the process.*
+*Figure 1. Handover-of-work networks for approved (left) and declined (right) applications. Node size is HITS authority and colour is the community. The validators (orange) form the smaller block that receives work at the end of the process.*
 
-**Some employees are more central.** Degree centralisation is moderate in the handover network (0.33–0.38) and higher in the working-together network (0.54–0.55). A few people share cases with a large part of the team. For example, in the working-together network 11049 shares cases with 48 of the 61 other employees (approved) and 46 of the 59 others (declined), while the median employee has only 11–12 such ties.
+**Some employees are more central.** Degree centralisation is modest in the handover network (0.33–0.38) and greater in the working-together network (0.54–0.55). A few individuals share cases with a sizeable part of the team. For instance, in the working-together network 11049 shares cases with 48 of the 61 other employees (approved) and 46 of the 59 others (declined), while the median employee has only 11–12 such ties.
 
 ### 5.2 Node measures: who is central, and why? (RQ1)
 
-**Is PageRank meaningful here?** PageRank divides a node's importance by its out-degree, and this has to make sense for the relation in the network. We argue that it does for weighted handovers. When the weights are divided by the total weight leaving A, they become the probability that a case goes from A to B next, so PageRank can be read as the share of time a case spends with each employee while it moves through the team. Its weakest assumption is the random "jump" (15% of the time the case jumps to a random employee), which does not happen in reality. For the undirected working-together network, PageRank adds little to degree, so we use eigenvector centrality there. PageRank and HITS authority give almost the same rankings (Spearman ρ = 0.97 for approved, 0.96 for declined), and 8 of the top 10 employees are shared. Our conclusions therefore do not depend on the out-degree normalisation.
+**Is PageRank meaningful here?** PageRank divides a node's importance by its out-degree, and this has to make sense for the relation in the network. We contend that it does for weighted handovers. When the weights are divided by the total weight leaving A, they turn into the probability that a case goes from A to B next, so PageRank can be read as the share of time a case spends with each employee while it travels through the team. Its weakest assumption is the random "jump" (15% of the time the case jumps to a random employee), which does not occur in reality. For the undirected working-together network, PageRank contributes little beyond degree, so we use eigenvector centrality there. PageRank and HITS authority provide almost the same rankings (Spearman ρ = 0.97 for approved, 0.96 for declined), and 8 of the top 10 employees are shared. Our conclusions thus do not rely on the out-degree normalisation.
 
 *Table 5. Selected central employees.*
 
@@ -159,29 +159,29 @@ Table 3 lists the measures we applied, the phenomenon each one investigates, and
 | 10899 | – | – | 0.044 / 0.039 | 0.115 / 0.081 | calling customers, receiving returned offers |
 | 11259 | – | – | 0.039 / 0.043 | 0.106 / 0.091 | calling customers, receiving returned offers |
 
-**Other measures.** 11049 also has the highest closeness in both handover networks (0.843 in both groups): they are only a few steps away from everyone. They receive work from more colleagues than anyone else (in-degree 50 approved, 48 declined), which is why their PageRank is high even though their handover betweenness is not: many cases pass through them, but they are not the only path between other people. In the working-together network, eigenvector centrality gives almost the same picture as betweenness. The top three are 11049 (0.275), 10899 (0.260) and 11259 (0.250) for approved cases, and 11259 (0.262), 11049 (0.250) and 10913 (0.241) for declined cases.
+**Other measures.** 11049 also has the greatest closeness in both handover networks (0.843 in both groups): they are only a few hops away from everyone. No one receives work from as many co-workers as they do (in-degree 50 for approved and 48 for declined cases). This is why their PageRank is high, while their handover betweenness is not. Numerous cases pass through them, but other employees are also connected by paths that do not go through them. In the working-together network, eigenvector centrality yields almost the same view as betweenness. The top three are 11049 (0.275), 10899 (0.260) and 11259 (0.250) for approved cases, and 11259 (0.262), 11049 (0.250) and 10913 (0.241) for declined cases.
 
-The numbers alone tell us *who* is central. To understand *why*, we looked at which activities these employees perform. Three clear roles appear:
+The numbers only reveal *who* is central. To discover *why*, we checked which tasks these employees do. Three evident roles emerge:
 
-1. **Front office (offer preparation): 10913, 11180.** They complete applications (*W_Completeren aanvraag*), create and send offers, and move applications to the offer stage. In the approved network they have the highest handover betweenness (in the declined network they are still in the top five, but behind 10629, 10609 and 10982): they are the passage between the first contact with a customer and the rest of the process.
-2. **Follow-up (customer contact): 11049, 10899, 11259.** Most of their work is calling customers about offers and about incomplete files, and recording offers that customers send back (about 180–240 times each). They touch many applications at different stages, so they share cases with many colleagues from different groups. This makes them the main bridges in the working-together network, with betweenness two to three times higher than anyone else (Figure 2).
-3. **Validators (final review and decision): 10138, 10609, 10972, 10629, 10809.** Their main task is *W_Valideren aanvraag*. Together with one more colleague, six employees perform about 95% of all validations. They also record the outcome events (approval or decline). In the handover network they are the authorities: work ends up with them. This matches the meaning of HITS: an authority receives work from many good hubs.
+1. **Front office (offer preparation): 10913, 11180.** They complete applications (*W_Completeren aanvraag*), create and send offers, and advance applications to the offer phase. In the approved network they have the greatest handover betweenness (in the declined network they are still in the top five, but behind 10629, 10609 and 10982): they are the conduit between the first contact with a client and the remainder of the process.
+2. **Follow-up (customer contact): 11049, 10899, 11259.** Most of their work is calling clients about offers and about incomplete dossiers, and recording offers that clients send back (about 180–240 times each). They deal with many applications at distinct stages of the process. As a result, they share cases with numerous co-workers from distinct groups. This renders them the principal bridges in the working-together network. Their betweenness is two to three times greater than that of anyone else (Figure 2).
+3. **Validators (final review and decision): 10138, 10609, 10972, 10629, 10809.** Their principal task is *W_Valideren aanvraag*. Together with one more colleague, six employees carry out about 95% of all validations. They also register the outcome events (approval or decline). In the handover network they are the authorities: work ends up with them. This fits the meaning of HITS: an authority receives work from numerous good hubs.
 
 ![Figure 2](../results/figures/working_together.png)
 
-*Figure 2. Working-together networks (threshold 0.2) for approved (left) and declined (right) applications. Node size is betweenness; colour is the community. The follow-up employees 11049, 10899 and 11259 are the main bridges.*
+*Figure 2. Working-together networks (threshold 0.2) for approved (left) and declined (right) applications. Node size is betweenness and colour is the community. The follow-up employees 11049, 10899 and 11259 are the main bridges.*
 
-This is the key link between data, measures and properties: the shape of the network reflects the stages of the loan process. Offer preparation, customer follow-up and validation each have their own central people, and the two handover communities correspond to these stages.
+This is how data, measures and properties are connected: the structure of the network follows the stages of the loan process. Each stage (preparing offers, following up with clients, validating) has its own central individuals. The two handover communities match these stages.
 
 ### 5.3 Approved vs. declined applications (RQ2)
 
-We tested the difference between the two groups in three ways.
+We assessed the difference between the two groups in three ways.
 
-**QAP correlation (dyadic level).** We correlated the two handover adjacency matrices and compared the result with 5,000 random relabellings of one of them (the rows and columns are shuffled together, which keeps the structure of the network but breaks the link between labels). H0: the two networks are not more similar than random.
+**QAP correlation (dyadic level).** We calculated the correlation between the two handover adjacency matrices. Then we checked it against 5,000 random relabellings of one matrix. In each relabelling, rows and columns are shuffled together. This keeps the structure of the network but severs the link between the labels. H0: the two networks are not more alike than anticipated by chance.
 
-**Label-permutation test (whole-network level).** We shuffled the labels "approved" and "declined" among the 1,508 cases 500 times, rebuilt both handover networks each time, and checked how often the random difference in density, reciprocity, clustering and centralisation was as large as the real one. H0: the outcome of a case does not change these measures.
+**Label-permutation test (whole-network level).** We randomly shuffled the labels "approved" and "declined" among the 1,508 cases, 500 times. Each time, we built both (unweighted) handover networks again. Then we counted how often the random difference in density, reciprocity, clustering and centralisation was at least as big as the actual one. H0: the outcome of a case has no effect on these measures.
 
-**Rank correlation of betweenness (node level).** We compared the betweenness rankings of the employees that appear in both groups with Spearman's ρ.
+**Rank correlation of betweenness (node level).** For the employees who occur in both groups, we correlated their betweenness rankings with Spearman's ρ.
 
 *Table 6. Tests comparing approved and declined applications.*
 
@@ -196,37 +196,37 @@ We tested the difference between the two groups in three ways.
 | Spearman ρ, handover betweenness | 0.90 | < 0.001 |
 | Spearman ρ, working-together betweenness | 0.77 | < 0.001 |
 
-The two handover networks are strongly and significantly similar (QAP r = 0.84; 0.0002 is the smallest p-value possible with 5,000 permutations). None of the whole-network differences is significant at the 5% level. The approved network is slightly more clustered and more centralised (p = 0.08 and 0.10), which we report only as a weak tendency. The same employees are central in both groups (ρ = 0.90 and 0.77), and the handover communities contain almost exactly the same people.
+The two handover networks are highly alike, and this similarity is significant (QAP r = 0.84, p = 0.0002, the smallest possible p-value with 5,000 permutations). No difference between the whole networks is significant at the 5% level. The approved network is slightly more clustered and more centralised (p = 0.08 and 0.10). We see this only as a weak trend. The same employees are central in both groups (ρ = 0.90 and 0.77). The handover communities are composed of almost the same individuals.
 
-The one visible difference is at the end of the process, among the validators. Since the groups have the same size, we can compare counts directly. Employee 10609 records 27% of declines but 16% of approvals, while 10138 records 30% of approvals and 21% of declines. This explains why 10609 is the strongest authority in the declined network and 10138 in the approved one. This is a description, not an explanation: 10609 may receive harder files, may be more senior, or may simply record decisions taken by others. The log does not tell us which.
+We see only one difference. It is at the end of the process, among the validators. Both groups have the same size, so we can compare the counts directly. Employee 10609 registers 27% of declines but only 16% of approvals. Employee 10138 registers 30% of approvals and 21% of declines. This partially accounts for why 10609 is the strongest authority in the declined network, and 10138 in the approved one. We can characterise this pattern, but we cannot identify its cause. Employee 10609 may get more complex dossiers, may be more senior, or may simply record decisions that others made. The log does not reveal which is true.
 
 ### 5.4 Robustness check
 
-With a working-together threshold of 0.1 instead of 0.2, the network is much denser (0.56–0.59), has fewer communities (3) and a weaker small-world effect (σ ≈ 1.4), as expected. However, the main findings do not change: approved and declined networks remain very similar (betweenness ρ = 0.91), and the same follow-up employees remain the main bridges. The handover results do not depend on this threshold.
+We also tested a working-together threshold of 0.1 instead of 0.2. As anticipated, the network becomes considerably denser (0.56–0.59), has fewer communities (3) and a weaker small-world effect (σ ≈ 1.4). The principal results remain the same. Approved and declined networks are still highly alike (working-together betweenness ρ = 0.91), and 11049 is still the strongest bridge in both groups. Betweenness scores become considerably more even: the greatest value drops from about 0.15 to 0.03. This happens because in a denser network most individuals are directly linked. As a result, the other follow-up employees forfeit their special position (10899 ranks 5th/3rd, 11259 8th/6th). The handover results do not rely on this threshold.
 
 ## 6. Conclusion
 
-The collaboration network of the bank (RQ1) is a small, tightly connected team of about 60 people, organised along the stages of the loan process. Work moves back and forth between colleagues rather than along a straight line, and the network has a small-world structure: tight working groups joined by short paths. Each stage has its own central people. A few front-office employees pass applications on to the rest of the team, a few follow-up employees are the bridges between groups because they are involved in so many cases, and a small group of six validators receives the work at the end and records the decisions. Network measures alone only told us who is central; combining them with the activity profiles told us why.
+The bank's collaboration network (RQ1) is a compact, closely knit team of around 60 people. And it is structured according to the stages of the lending process. Work tends to go back and forth between co-workers rather than along a straight line. So, the network has a small-world structure where cohesive working groups are linked by short paths. Each step is built around its own central individuals. A few front-office employees forward applications to the rest of the team and a few follow-up employees are the bridges between groups since they are the only ones who are engaged in most cases. Then a small group of six validators receives the work at the end and registers the decisions. On their own, network measures only indicated who is central. Combining them with the activity profiles explained why.
 
-Among applications that reached the final review (RQ2), we did not find significantly different collaboration patterns. Approved and declined applications are handled by the same people, in the same groups, passing work in the same way. This suggests that the outcome of an application depends on the application itself (the customer, the amount, the documents) more than on who works on it and how they work together. The only visible difference is in which validator records the decision, which deserves a closer look but cannot be interpreted as a cause with our data.
+Among applications that reached the final review (RQ2), we did not detect significantly distinct collaboration patterns. Approved and declined applications are processed by the same people, in the same groups, distributing the work in the same way. This leads us to the conclusion that the outcome of an application depends on the application itself more than on who works on it and how they work together. The only difference that could be noticed is in which validator registers the decision, which merits a more detailed examination but cannot be construed as a cause with our data.
 
-This "null result" is useful in itself. It indicates that the collaboration structure is a stable property of the organisation and not something that changes with the outcome of a case. For process redesign, it means that the reasons for declined applications should be looked for in the cases and in the decision rules, not in the collaboration between employees.
+This "null result" is useful, since it shows that the collaboration structure is a persistent property of the organisation. It means that it is not something that varies with the outcome of a case. Restructuring the process means that the reasons for rejecting applications should be sought in the cases themselves and the decision-making rules, rather than in the interactions between employees.
 
 ## 7. Critique
 
-**To what extent are the problems solved?** RQ1 is answered well: the measures describe the structure of the network, and the activity profiles explain the role of the central employees. However, the roles were inferred from the same log, not from an independent source such as an organisation chart, so the match between network positions and roles is plausible but not externally confirmed. RQ2 is answered only partly. We found no significant difference in the measures we tested, with 754 cases per group, but we cannot say that no difference exists. A null result depends on the power of the tests, and we did not estimate how large a difference our design could detect.
+**To what extent are the problems solved?** RQ1 is addressed well: the measures characterise the structure of the network, and the activity profiles clarify the role of the central employees. However, the roles were derived from the same log, not from an independent source such as an organisation chart, so the match between network positions and roles is credible but not independently validated. RQ2 is addressed only partially. We observed no significant difference in the measures we examined, with 754 cases per group, but we cannot say that no difference is present. A null result depends on the power of the tests, and we did not quantify how big a difference our design could identify.
 
 **What we could have done differently.**
 
-- **Validating ties and decisions.** Section 4 describes the main validity limits: informal collaboration is not in the log, and the person who records a decision may not be the one who made it. Interviews or a survey of employees could validate the ties, as van der Aalst et al. (2005) did with managers. Data on formal roles would show who actually decides, and would give an independent attribute to test homophily (do employees with the same role work together more?).
-- **Edge definition.** A handover counts only direct succession and ignores how long the case waited in between: a handover after five minutes and one after five days are the same tie. Weighting ties by time, or using other metrics proposed by van der Aalst and Song (for example subcontracting), might show differences that direct succession hides.
-- **One sample.** We used one random sample of approved applications. Repeating the analysis with many samples would show how stable the numbers are.
-- **Limited tests.** The permutation test covered four whole-network measures on the unweighted handover network. Weighted measures, or a node-level test for the validators, could reveal smaller effects. The clustering difference (p = 0.08) might become significant with more data.
-- **Time.** We treated six months as one network. Teams and workload may change; a sequence of monthly networks would show this.
-- **Other models.** Case attributes, such as the amount requested, could be added to test whether case features predict the outcome better than the collaboration structure. Exponential random graph models (ERGM) could test several effects at the same time.
-- **Thresholds.** We checked two working-together thresholds (Section 5.4); a wider range would make this result stronger.
+- **Validating ties and decisions.** Section 4 describes the principal validity limitations: unofficial collaboration is not in the log, and the person who registers a decision may not be the one who made it. Interviews or a survey of employees could validate the ties, as van der Aalst et al. (2005) did with managers. Data on formal roles would uncover who actually makes the decision, and would provide an independent attribute to test homophily (do employees with the same role work together more?).
+- **Edge definition.** A handover considers only direct succession and disregards how long the case remained idle in between: a handover after five minutes and one after five days are the same tie. Weighting ties by time, or applying other metrics introduced by van der Aalst and Song (for instance subcontracting), could uncover differences that direct succession conceals.
+- **One sample.** We used one random sample of approved applications. Replicating the analysis with numerous samples would uncover how robust the numbers are.
+- **Limited tests.** The permutation test included four whole-network measures on the unweighted handover network. Weighted measures, or a node-level test for the validators, could uncover smaller effects. The clustering difference (p = 0.08) could prove significant with more data.
+- **Time.** We regarded six months as one network. Teams and workload may shift, and a series of monthly networks would uncover this.
+- **Other models.** Case attributes, such as the amount requested, could be incorporated to test whether case characteristics forecast the outcome better than the collaboration structure. Exponential random graph models (ERGM) could test various effects simultaneously.
+- **Thresholds.** We examined two working-together thresholds (Section 5.4). A wider range would make this result more robust.
 
-Despite these limits, the study shows that the method of van der Aalst and Song works on a large public log and can be fully reproduced, and that it reveals a clear and interpretable structure of work.
+In spite of these limitations, the study shows that the method of van der Aalst and Song is applicable to a large public log and can be completely replicated, and that it uncovers an evident and interpretable structure of work.
 
 ## References
 
