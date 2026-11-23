@@ -1,9 +1,9 @@
 # Who Works With Whom? Collaboration Networks Behind Approved and Declined Loan Applications
 
 Kübra Topçuoğlu, MA Digital Humanities and Digital Knowledge, 00001214604
-Daria Talanova, MA Digital Humanities and Digital Knowledge, [matricola]
-Maria Grigoryeva, MA Digital Humanities and Digital Knowledge, [matricola]
-Aizana Kuular, MA Digital Humanities and Digital Knowledge, [matricola]
+Daria Talanova, MA Digital Humanities and Digital Knowledge, 0001213863
+Maria Grigoryeva, MA Digital Humanities and Digital Knowledge, 0001213897
+Aizana Kuular, MA Digital Humanities and Digital Knowledge, 0001215039
 
 ## 1. Introduction
 
@@ -175,11 +175,11 @@ This is how data, measures and properties are connected: the structure of the ne
 
 ### 5.3 Approved vs. declined applications (RQ2)
 
-We assessed the difference between the two groups in three ways.
+We looked at the difference between the two groups in three ways.
 
-**QAP correlation (dyadic level).** We calculated the correlation between the two handover adjacency matrices. Then we checked it against 5,000 random relabellings of one matrix. In each relabelling, rows and columns are shuffled together. This keeps the structure of the network but severs the link between the labels. H0: the two networks are not more alike than anticipated by chance.
+**QAP correlation (dyadic level).** We calculated the correlation between the two handover adjacency matrices and then compared it to the correlations we would have obtained from 5,000 random relabellings of one of the matrices. In each of the relabellings the rows and columns are shuffled together. This preserves the structure of the network but breaks the link between the labels. H0: the two networks are no more similar than would be expected by chance.
 
-**Label-permutation test (whole-network level).** We randomly shuffled the labels "approved" and "declined" among the 1,508 cases, 500 times. Each time, we built both (unweighted) handover networks again. Then we counted how often the random difference in density, reciprocity, clustering and centralisation was at least as big as the actual one. H0: the outcome of a case has no effect on these measures.
+**Label-permutation test (whole-network level).** We randomly permuted the "approved" and "declined" labels amongst the 1,508 cases 500 times. In each instance we rebuilt both (unweighted) handover networks. We then counted how many of those 500 permutations produced a random difference in density, reciprocity, clustering and centralisation that was at least as large as the observed difference. H0: the outcome of a case has no effect on any of these measures.
 
 **Rank correlation of betweenness (node level).** For the employees who occur in both groups, we correlated their betweenness rankings with Spearman's ρ.
 
@@ -196,13 +196,14 @@ We assessed the difference between the two groups in three ways.
 | Spearman ρ, handover betweenness | 0.90 | < 0.001 |
 | Spearman ρ, working-together betweenness | 0.77 | < 0.001 |
 
-The two handover networks are highly alike, and this similarity is significant (QAP r = 0.84, p = 0.0002, the smallest possible p-value with 5,000 permutations). No difference between the whole networks is significant at the 5% level. The approved network is slightly more clustered and more centralised (p = 0.08 and 0.10). We see this only as a weak trend. The same employees are central in both groups (ρ = 0.90 and 0.77). The handover communities are composed of almost the same individuals.
+The two handover networks are extremely similar, and this similarity is significant (QAP r = 0.84, p = 0.0002, the smallest possible p-value with 5,000 permutations). There is no significant difference between the whole networks at the 5% level. The approved network is only slightly more clustered and more centralised (p = 0.08 and 0.10), which is at most a very weak trend. The same people are central in both groups (ρ = 0.90 and 0.77). The handover communities are made up of almost the same individuals.
 
-We see only one difference. It is at the end of the process, among the validators. Both groups have the same size, so we can compare the counts directly. Employee 10609 registers 27% of declines but only 16% of approvals. Employee 10138 registers 30% of approvals and 21% of declines. This partially accounts for why 10609 is the strongest authority in the declined network, and 10138 in the approved one. We can characterise this pattern, but we cannot identify its cause. Employee 10609 may get more complex dossiers, may be more senior, or may simply record decisions that others made. The log does not reveal which is true.
+We see only one difference, and it is among the validators at the end of the process. The groups are the same size, so we can compare the counts directly. 10609 records 27% of declines but only 16% of approvals, while 10138 records 30% of approvals and 21% of declines. This partly explains why 10609 is the dominant authority in the declined network and 10138 in the approved one. We can describe the pattern, but we cannot say what causes it. 10609 may be getting more complex dossiers, may be more senior, or may simply be recording decisions made by others. The log does not tell us which is the case.
 
 ### 5.4 Robustness check
 
-We also tested a working-together threshold of 0.1 instead of 0.2. As anticipated, the network becomes considerably denser (0.56–0.59), has fewer communities (3) and a weaker small-world effect (σ ≈ 1.4). The principal results remain the same. Approved and declined networks are still highly alike (working-together betweenness ρ = 0.91), and 11049 is still the strongest bridge in both groups. Betweenness scores become considerably more even: the greatest value drops from about 0.15 to 0.03. This happens because in a denser network most individuals are directly linked. As a result, the other follow-up employees forfeit their special position (10899 ranks 5th/3rd, 11259 8th/6th). The handover results do not rely on this threshold.
+We also tried a working-together threshold of 0.1 rather than 0.2. As expected, the network becomes a lot denser (0.56–0.59), has fewer communities (3) and a much weaker small-world effect (σ ≈ 1.4). The main results are unchanged. The approved and declined networks are still extremely similar (working-together betweenness ρ = 0.91), and 11049 is still the key bridge in both groups. The betweenness values are now much more even, with the highest value dropping from around 0.15 to 0.03. This is because in a denser network most individuals are directly linked, so the other follow-up employees lose their special status (10899 is 5th/3rd, 11259 is 8th/6th). The handover results are not dependent on this threshold.
+
 
 ## 6. Conclusion
 
